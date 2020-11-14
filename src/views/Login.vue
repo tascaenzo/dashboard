@@ -11,35 +11,52 @@
   width: 100vh;
   height: 100vh;
   background-color: #FAFAFA;
+  /*background-color: #5f1414;*/
+  /*style="position: absolute; top: 50%"*/
 }
 </style>
 
 <template>
-  <v-row no-gutters>
-    <v-col
-      cols="12"
-      md="7"
-      class="bg"
-      v-show="!($vuetify.breakpoint.sm || $vuetify.breakpoint.xs)"
-    />
-    <v-col cols="12" md="5" class="form">
+  <v-layout>
+    <v-flex lg8 md6 sm4 bg v-show="!$vuetify.breakpoint.xs" />
+    <v-flex lg4 md6 sm8 xs12 form>
       <v-container>
         <v-form>
-          <v-col cols="12" sm="6">
-            <v-text-field
-              label="Prepend"
-              prepend-icon="mdi-map-marker"
-            ></v-text-field>
-          </v-col>
+          <v-text-field
+            prepend-icon="mdi-account-circle"
+            label="E-mail"
+
+            required
+          ></v-text-field>
+
+          <v-text-field
+          color: red
+
+            prepend-icon="mdi-lock"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showPassword ? 'text' : 'password'"
+            label="Password"
+            @click:append="showPassword = !showPassword"
+          ></v-text-field>
+
+          <v-checkbox label="Do you agree?"></v-checkbox>
+<v-btn
+  color="primary"
+></v-btn>
+
         </v-form>
       </v-container>
-    </v-col>
-  </v-row>
+    </v-flex>
+  </v-layout>
 </template>
 
-<script>
+
+<script lang="ts">
 export default {
   name: "Login",
   components: {},
+  data() {
+    return { showPassword: false };
+  },
 };
 </script>

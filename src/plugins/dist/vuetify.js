@@ -1,9 +1,9 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify';
-
-Vue.use(Vuetify);
-
-export default new Vuetify({
+"use strict";
+exports.__esModule = true;
+var vue_1 = require("vue");
+var vuetify_1 = require("vuetify");
+vue_1["default"].use(vuetify_1["default"]);
+exports["default"] = new vuetify_1["default"]({
     theme: {
         themes: {
             light: {
@@ -15,7 +15,6 @@ export default new Vuetify({
                 success: '#4CAF50',
                 warning: '#FFC107'
             }
-        },
-    },
-
+        }
+    }
 });

@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-app  id="inspire">
     <slot />
-  </div>
+  </v-app>
 </template>
 
 <script lang="ts">
