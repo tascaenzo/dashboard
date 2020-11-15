@@ -10,18 +10,20 @@
 .form {
   width: 100vh;
   height: 100vh;
-  background-color: #FAFAFA;
+  background-color: #F5F5F5;
 }
 
 .footer {
-  bottom: 1%;
+  bottom: 0%;
   position: fixed;
 }
 </style>
 
 <template>
   <v-layout>
-    <v-flex lg7 md6 sm4 bg v-show="!$vuetify.breakpoint.xs" />
+    <v-flex lg7 md6 sm4 v-show="!$vuetify.breakpoint.xs">
+      <v-card height="100%" width="100%" :elevation="16" class="bg" />
+    </v-flex>
     <v-flex lg5 md6 sm8 xs12 form>
       <v-container pa-10 py-16>
         <v-card-actions class="justify-center">
@@ -50,9 +52,9 @@
         </v-form>
 
         <v-card-actions class="justify-center">
-          <v-flex class="footer">
+          <p class="font-weight-light footer">
             Copyright © Enzo Tasca {{ new Date().getFullYear() }}
-          </v-flex>
+          </p>
         </v-card-actions>
       </v-container>
     </v-flex>
