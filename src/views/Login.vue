@@ -11,16 +11,23 @@
   width: 100vh;
   height: 100vh;
   background-color: #FAFAFA;
-  /*background-color: #5f1414;*/
-  /*style="position: absolute; top: 50%"*/
+}
+
+.footer {
+  bottom: 1%;
+  position: fixed;
 }
 </style>
 
 <template>
   <v-layout>
-    <v-flex lg8 md6 sm4 bg v-show="!$vuetify.breakpoint.xs" />
-    <v-flex lg4 md6 sm8 xs12 form>
-      <v-container>
+    <v-flex lg7 md6 sm4 bg v-show="!$vuetify.breakpoint.xs" />
+    <v-flex lg5 md6 sm8 xs12 form>
+      <v-container pa-10 py-16>
+        <v-card-actions class="justify-center">
+          <img alt="Login Avatar" height="180" src="@/assets/img/avatar.png" />
+        </v-card-actions>
+
         <v-form>
           <v-text-field
             prepend-icon="mdi-account-circle"
@@ -36,11 +43,17 @@
             @click:append="showPassword = !showPassword"
           ></v-text-field>
 
-          <p>{{ $tc("message", 1) }}</p>
-          {{ $i18n.locale }}
-          <v-checkbox label="Do you agree?"></v-checkbox>
-          <v-btn @click="lingua" color="primary">{{$t('login')}}</v-btn>
+          <!--v-checkbox label="Do you agree?"></v-checkbox-->
+          <v-card-actions class="justify-center">
+            <v-btn @click="sigin" color="primary">{{ $t("login") }}</v-btn>
+          </v-card-actions>
         </v-form>
+
+        <v-card-actions class="justify-center">
+          <v-flex class="footer">
+            Copyright © Enzo Tasca {{ new Date().getFullYear() }}
+          </v-flex>
+        </v-card-actions>
       </v-container>
     </v-flex>
   </v-layout>
@@ -48,7 +61,6 @@
 
 
 <script lang="ts">
-
 export default {
   name: "Login",
   components: {},
@@ -57,8 +69,8 @@ export default {
   },
 
   methods: {
-    lingua() {
-      this.$i18n.locale = "en";
+    sigin() {
+      //this.$i18n.locale = "en";
     },
   },
 };
