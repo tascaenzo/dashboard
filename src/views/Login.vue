@@ -25,13 +25,10 @@
           <v-text-field
             prepend-icon="mdi-account-circle"
             label="E-mail"
-
             required
           ></v-text-field>
 
           <v-text-field
-          color: red
-
             prepend-icon="mdi-lock"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPassword ? 'text' : 'password'"
@@ -39,11 +36,10 @@
             @click:append="showPassword = !showPassword"
           ></v-text-field>
 
+          <p>{{ $tc("message", 1) }}</p>
+          {{ $i18n.locale }}
           <v-checkbox label="Do you agree?"></v-checkbox>
-<v-btn
-  color="primary"
-></v-btn>
-
+          <v-btn @click="lingua" color="primary">{{$t('login')}}</v-btn>
         </v-form>
       </v-container>
     </v-flex>
@@ -52,11 +48,18 @@
 
 
 <script lang="ts">
+
 export default {
   name: "Login",
   components: {},
   data() {
     return { showPassword: false };
+  },
+
+  methods: {
+    lingua() {
+      this.$i18n.locale = "en";
+    },
   },
 };
 </script>
