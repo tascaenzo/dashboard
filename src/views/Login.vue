@@ -10,7 +10,7 @@
 .form {
   width: 100vh;
   height: 100vh;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
 }
 
 .footer {
@@ -63,6 +63,9 @@
 
 
 <script lang="ts">
+import { mapActions } from "vuex";
+import { LOGIN, LOGOUT } from "@/store/auth/actions.type";
+
 export default {
   name: "Login",
   components: {},
@@ -71,7 +74,12 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      login: `auth/${LOGIN}`,
+      logout: `auth/${LOGOUT}`,
+    }),
     sigin() {
+      this.logout({ msg: "aaa" });
       //this.$i18n.locale = "en";
     },
   },
