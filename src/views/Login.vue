@@ -30,24 +30,29 @@
           <img alt="Login Avatar" height="180" src="@/assets/img/avatar.png" />
         </v-card-actions>
 
-        <v-form>
+        <v-form @submit.prevent="onSubmit" lazy-validation>
           <v-text-field
             prepend-icon="mdi-account-circle"
+            v-model="email"
             label="E-mail"
-            required
+            :rules="emailRules"
+            required="true"
           ></v-text-field>
 
           <v-text-field
             prepend-icon="mdi-lock"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPassword ? 'text' : 'password'"
+            :rules="passwordRules"
+            v-model="password"
             label="Password"
             @click:append="showPassword = !showPassword"
+            required="true"
           ></v-text-field>
 
-          <!--v-checkbox label="Do you agree?"></v-checkbox-->
+          <v-checkbox v-model="remember" :label="$t('Remember me')"></v-checkbox>
           <v-card-actions class="justify-center">
-            <v-btn @click="sigin" color="primary">{{ $t("login") }}</v-btn>
+            <v-btn type="submit" color="primary">{{ $t("login") }}</v-btn>
           </v-card-actions>
         </v-form>
 
@@ -61,27 +66,57 @@
   </v-layout>
 </template>
 
-
 <script lang="ts">
+import Vue from "vue";
 import { mapActions } from "vuex";
-import { LOGIN, LOGOUT } from "@/store/auth/actions.type";
-
-export default {
+import { LOGIN } from "@/store/auth/actions.type";
+import { LoginDto } from "@/models/auth.dto";
+import { URL_API } from '../env.json';
+export default Vue.extend({
   name: "Login",
   components: {},
+
   data() {
-    return { showPassword: false };
+    return {
+      /* State form */
+      showPassword: false,
+
+      /* Fields form */
+      email: "",
+      password: "",
+      remember: false,
+
+      /* Validation form */
+      emailRules: [
+        (v: string) => !!v || this.$t("E-mail is required"),
+        (v: string) => /.+@.+/.test(v) || this.$t("E-mail must be valid"),
+      ],
+      passwordRules: [(v: string) => !!v || this.$t("Password is required")],
+    };
   },
+
+  computed: {},
 
   methods: {
     ...mapActions({
       login: `auth/${LOGIN}`,
-      logout: `auth/${LOGOUT}`,
     }),
-    sigin() {
-      this.logout({ msg: "aaa" });
-      //this.$i18n.locale = "en";
+
+    onSubmit() {
+      const loginDto: LoginDto = new LoginDto({
+        email: this.email,
+        password: this.password,
+        remember: this.remember,
+      });
+
+      this.login(loginDto)
+        .then((data) => {
+          console.log(data);
+        })
+        .catch(() => {
+          console.log("problema");
+        });
     },
   },
-};
+});
 </script>

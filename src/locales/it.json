@@ -1,4 +1,9 @@
 {
   "message": "ciao i18n !!",
-  "login": "Accedi"
+  "login": "Accedi",
+  "Remember me": "Resta connesso",
+  "E-mail is required": "E-mail richiesta",
+  "E-mail must be valid": "E-mail non valida",
+  "Password is required": "Password richiesta"
+
 }
