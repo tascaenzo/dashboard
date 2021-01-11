@@ -50,7 +50,10 @@
             required="true"
           ></v-text-field>
 
-          <v-checkbox v-model="remember" :label="$t('Remember me')"></v-checkbox>
+          <v-checkbox
+            v-model="remember"
+            :label="$t('Remember me')"
+          ></v-checkbox>
           <v-card-actions class="justify-center">
             <v-btn type="submit" color="primary">{{ $t("login") }}</v-btn>
           </v-card-actions>
@@ -67,56 +70,48 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapActions } from "vuex";
-import { LOGIN } from "@/store/auth/actions.type";
-import { LoginDto } from "@/models/auth.dto";
-import { URL_API } from '../env.json';
+import Vue from 'vue'
+import { LoginDto } from '@/models/auth.dto'
+import { mapActions } from 'vuex'
+
 export default Vue.extend({
-  name: "Login",
+  name: 'Login',
   components: {},
 
-  data() {
+  data () {
     return {
       /* State form */
       showPassword: false,
 
       /* Fields form */
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       remember: false,
 
       /* Validation form */
       emailRules: [
-        (v: string) => !!v || this.$t("E-mail is required"),
-        (v: string) => /.+@.+/.test(v) || this.$t("E-mail must be valid"),
+        (v: string) => !!v || this.$t('E-mail is required'),
+        (v: string) => /.+@.+/.test(v) || this.$t('E-mail must be valid')
       ],
-      passwordRules: [(v: string) => !!v || this.$t("Password is required")],
-    };
+      passwordRules: [(v: string) => !!v || this.$t('Password is required')]
+    }
   },
 
   computed: {},
 
   methods: {
     ...mapActions({
-      login: `auth/${LOGIN}`,
+      login: 'Auth/LOGIN'
     }),
 
-    onSubmit() {
+    async onSubmit () {
       const loginDto: LoginDto = new LoginDto({
-        email: this.email,
-        password: this.password,
-        remember: this.remember,
-      });
-
-      this.login(loginDto)
-        .then((data) => {
-          console.log(data);
-        })
-        .catch(() => {
-          console.log("problema");
-        });
-    },
-  },
-});
+        email: 'enzo@tasca.it', // this.email,
+        password: 'password', // this.password,
+        remember: false // this.remember,
+      })
+      console.log(await this.login(loginDto))
+    }
+  }
+})
 </script>
