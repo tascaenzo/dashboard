@@ -8,7 +8,8 @@ import { URL_API } from '@/env.json'
 import axios from 'axios'
 
 export enum ActionTypes {
-  LOGIN = 'LOGIN'
+  LOGIN = 'LOGIN',
+  LOGOUT = 'LOGOUT'
 }
 
 type ActionAugments = Omit<ActionContext<State, State>, 'commit'> & {
@@ -19,6 +20,7 @@ type ActionAugments = Omit<ActionContext<State, State>, 'commit'> & {
 }
 
 export type Actions = {
+  [ActionTypes.LOGIN](context: ActionAugments, dto: LoginDto): Promise<boolean>
   [ActionTypes.LOGIN](context: ActionAugments, dto: LoginDto): Promise<boolean>
 }
 
@@ -31,6 +33,9 @@ export const actions: ActionTree<State, State> = {
         commit(MutationType.SET_USER, data.user)
         commit(MutationType.SET_TOKEN, data.token)
         commit(MutationType.SET_REFRESH_TOKEN, data.refreshToken)
+
+        localStorage.setItem('token', JSON.stringify(data.token))
+        localStorage.setItem('refreshToken', JSON.stringify(data.refreshToken))
       })
       .catch((error) => {
         console.log(error)

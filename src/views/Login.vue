@@ -72,6 +72,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { LoginDto } from '@/models/auth.dto'
+import { ActionTypes } from '@/store/auth/actions'
 import { mapActions } from 'vuex'
 
 export default Vue.extend({
@@ -101,7 +102,7 @@ export default Vue.extend({
 
   methods: {
     ...mapActions({
-      login: 'Auth/LOGIN'
+      login: `Auth/${ActionTypes.LOGIN}`
     }),
 
     async onSubmit () {
@@ -110,7 +111,9 @@ export default Vue.extend({
         password: 'password', // this.password,
         remember: false // this.remember,
       })
-      console.log(await this.login(loginDto))
+      if (await this.login(loginDto)) {
+        this.$router.push('/')
+      }
     }
   }
 })
