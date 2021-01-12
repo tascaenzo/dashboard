@@ -24,7 +24,7 @@ export type Actions = {
   [ActionTypes.LOGIN](context: ActionAugments, dto: LoginDto): Promise<boolean>
 }
 
-export const actions: ActionTree<State, State> = {
+export const actions: ActionTree<State, State> /* & Actions */ = {
   async [ActionTypes.LOGIN] ({ commit }, dto) {
     await axios.post(`${URL_API}/auth/login`, dto)
       .then(response => {
