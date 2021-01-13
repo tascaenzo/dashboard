@@ -10,6 +10,7 @@ export class NotificationDto {
   readonly message!: string;
   readonly type!: Type;
   readonly createdAt = Date.now();
+  isClosed = true;
 
   public constructor (dto?: Partial<NotificationDto>) {
     Object.assign(this, dto)

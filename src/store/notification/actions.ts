@@ -22,10 +22,10 @@ export type Actions = {
 }
 
 export const actions: ActionTree<State, State> & Actions = {
-  [ActionTypes.PUSH_NOTIFICATION] ({ commit }, dto: NotificationDto) {
-    commit(MutationType.PUSH_NOTIFICATION, dto)
+  [ActionTypes.PUSH_NOTIFICATION] (context: ActionAugments, dto: NotificationDto) {
+    context.commit(MutationType.PUSH_NOTIFICATION, dto)
   },
-  [ActionTypes.REMOVE_NOTIFICATION] ({ commit }, id: string) {
-    commit(MutationType.REMOVE_NOTIFICATION, id)
+  [ActionTypes.REMOVE_NOTIFICATION] (context: ActionAugments, id: string) {
+    context.commit(MutationType.REMOVE_NOTIFICATION, id)
   }
 }
