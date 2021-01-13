@@ -4,19 +4,9 @@ import { State, state } from './state'
 import { NotificationDto } from '@/models/notification.dto'
 
 type Getters = {
-  // getNotification(id: string): NotificationDto | null
-  getNotifications(): NotificationDto[]
+  getNotifications(): NotificationDto[],
 }
 
-export const getters: GetterTree<State, State> & Getters = {
-  /* getNotification (id: string) {
-    for (const e of state.notifications) {
-      if (e.id === id) {
-        return e
-      }
-    }
-    return null
-  }, */
+export const getters: GetterTree<State, unknown> & Getters = {
   getNotifications () { return state.notifications }
-
 }
