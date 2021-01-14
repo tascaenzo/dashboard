@@ -16,22 +16,20 @@
       border="left"
       dismissible
       elevation="5"
-      type="success"
+      :type="notification.type"
       transition="scroll-x-transition"
       prominent
-      @click="snackbar"
-      v-model="notification.isClosed"
-
-    >
-      Test
+      @input="closeAlert(notification.id)"
+    > {{notification.message}}
     </v-alert>
   </div>
 </template>
 
 <script lang="ts">
 import { state } from '@/store/notification/state'
+import { ActionTypes } from '@/store/notification/actions'
+import { mapState, mapActions } from 'vuex'
 import Vue from 'vue'
-import { mapState } from 'vuex'
 
 export default Vue.extend({
   name: 'Notification',
@@ -43,9 +41,9 @@ export default Vue.extend({
   },
 
   methods: {
-    async snackbar () {
-      console.log(state.notifications)
-    }
+    ...mapActions({
+      closeAlert: ActionTypes.REMOVE_NOTIFICATION
+    })
   }
 })
 </script>
