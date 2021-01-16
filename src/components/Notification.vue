@@ -20,6 +20,7 @@
       transition="scroll-x-transition"
       prominent
       @input="closeAlert(notification.id)"
+      :value="notification.isOpen"
     > {{notification.message}}
     </v-alert>
   </div>
@@ -28,7 +29,10 @@
 <script lang="ts">
 import { state } from '@/store/notification/state'
 import { ActionTypes } from '@/store/notification/actions'
-import { mapState, mapActions } from 'vuex'
+import { MutationTypes } from '@/store/notification/mutations'
+import { mapState, mapActions, mapMutations } from 'vuex'
+import store from '@/store'
+import { NotificationDto } from '@/models/notification.dto'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -40,9 +44,25 @@ export default Vue.extend({
     })
   },
 
+  watch: {
+    notifications: {
+      handler: (notifications: NotificationDto[]) => {
+        for (const e of notifications) {
+          if (!e.isOpen) {
+            setTimeout(() => { store.dispatch(ActionTypes.REMOVE_NOTIFICATION, e.id) }, 300)
+          }
+        }
+      },
+      deep: true
+    }
+  },
+
   methods: {
     ...mapActions({
-      closeAlert: ActionTypes.REMOVE_NOTIFICATION
+      removeNotification: ActionTypes.REMOVE_NOTIFICATION
+    }),
+    ...mapMutations({
+      closeAlert: MutationTypes.CLOSE_NOTIFICATION
     })
   }
 })

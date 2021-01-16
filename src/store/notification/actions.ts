@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ActionContext, ActionTree } from 'vuex'
-import { Mutations, MutationType } from './mutations'
+import { Mutations, MutationTypes } from './mutations'
 import { State } from './state'
 import { NotificationDto } from '@/models/notification.dto'
 
@@ -25,15 +25,15 @@ export type Actions = {
 
 export const actions: ActionTree<State, State> & Actions = {
   [ActionTypes.PUSH_NOTIFICATION] (context: ActionAugments, dto: NotificationDto) {
-    context.commit(MutationType.PUSH_NOTIFICATION, dto)
+    context.commit(MutationTypes.PUSH_NOTIFICATION, dto)
 
     if (dto.autoClose === true) {
       setTimeout(() => {
-        context.commit(MutationType.REMOVE_NOTIFICATION, dto.id)
+        context.commit(MutationTypes.CLOSE_NOTIFICATION, dto.id)
       }, TIME_OUT)
     }
   },
   [ActionTypes.REMOVE_NOTIFICATION] (context: ActionAugments, id: string) {
-    context.commit(MutationType.REMOVE_NOTIFICATION, id)
+    context.commit(MutationTypes.REMOVE_NOTIFICATION, id)
   }
 }
