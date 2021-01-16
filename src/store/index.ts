@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-import Auth from './auth'
-import Notification from './notification'
+import Auth from "./auth";
+import Notification from "./notification";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-const debug = process.env.NODE_ENV !== 'production'
+const debug = process.env.NODE_ENV !== "production";
 
 export default new Vuex.Store({
   modules: {
@@ -14,4 +14,4 @@ export default new Vuex.Store({
     Notification
   },
   strict: debug
-})
+});

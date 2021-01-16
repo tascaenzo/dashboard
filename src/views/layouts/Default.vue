@@ -1,11 +1,11 @@
 <template>
-  <v-app  id="inspire">
+  <v-app id="inspire">
     <slot />
   </v-app>
 </template>
 
 <script lang="ts">
 export default {
-  name: 'Default'
-}
+  name: "Default"
+};
 </script>

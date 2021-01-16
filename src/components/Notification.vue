@@ -21,22 +21,23 @@
       prominent
       @input="closeAlert(notification.id)"
       :value="notification.isOpen"
-    > {{notification.message}}
+    >
+      {{ notification.message }}
     </v-alert>
   </div>
 </template>
 
 <script lang="ts">
-import { state } from '@/store/notification/state'
-import { ActionTypes } from '@/store/notification/actions'
-import { MutationTypes } from '@/store/notification/mutations'
-import { mapState, mapActions, mapMutations } from 'vuex'
-import store from '@/store'
-import { NotificationDto } from '@/models/notification.dto'
-import Vue from 'vue'
+import { state } from "@/store/notification/state";
+import { ActionTypes } from "@/store/notification/actions";
+import { MutationTypes } from "@/store/notification/mutations";
+import { NotificationDto } from "@/models/notification.dto";
+import { mapState, mapActions, mapMutations } from "vuex";
+import store from "@/store";
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'Notification',
+  name: "Notification",
 
   computed: {
     ...mapState({
@@ -49,7 +50,9 @@ export default Vue.extend({
       handler: (notifications: NotificationDto[]) => {
         for (const e of notifications) {
           if (!e.isOpen) {
-            setTimeout(() => { store.dispatch(ActionTypes.REMOVE_NOTIFICATION, e.id) }, 300)
+            setTimeout(() => {
+              store.dispatch(ActionTypes.REMOVE_NOTIFICATION, e.id);
+            }, 300);
           }
         }
       },
@@ -65,5 +68,5 @@ export default Vue.extend({
       closeAlert: MutationTypes.CLOSE_NOTIFICATION
     })
   }
-})
+});
 </script>

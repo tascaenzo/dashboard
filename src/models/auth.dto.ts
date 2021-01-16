@@ -3,7 +3,7 @@ export class LoginDto {
   readonly password!: string;
   readonly remember!: boolean;
 
-  public constructor (dto?: Partial<LoginDto>) {
-    Object.assign(this, dto)
+  public constructor(dto?: Partial<LoginDto>) {
+    Object.assign(this, dto);
   }
 }

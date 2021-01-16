@@ -70,32 +70,32 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { LoginDto } from '@/models/auth.dto'
-import { ActionTypes } from '@/store/auth/actions'
-import { mapActions } from 'vuex'
+import Vue from "vue";
+import { LoginDto } from "@/models/auth.dto";
+import { ActionTypes } from "@/store/auth/actions";
+import { mapActions } from "vuex";
 
 export default Vue.extend({
-  name: 'Login',
+  name: "Login",
   components: {},
 
-  data () {
+  data() {
     return {
       /* State form */
       showPassword: false,
 
       /* Fields form */
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       remember: false,
 
       /* Validation form */
       emailRules: [
-        (v: string) => !!v || this.$t('E-mail is required'),
-        (v: string) => /.+@.+/.test(v) || this.$t('E-mail must be valid')
+        (v: string) => !!v || this.$t("E-mail is required"),
+        (v: string) => /.+@.+/.test(v) || this.$t("E-mail must be valid")
       ],
-      passwordRules: [(v: string) => !!v || this.$t('Password is required')]
-    }
+      passwordRules: [(v: string) => !!v || this.$t("Password is required")]
+    };
   },
 
   computed: {},
@@ -105,16 +105,16 @@ export default Vue.extend({
       login: `Auth/${ActionTypes.LOGIN}`
     }),
 
-    async onSubmit () {
+    async onSubmit() {
       const loginDto: LoginDto = new LoginDto({
-        email: 'enzo@tasca.it', // this.email,
-        password: 'password', // this.password,
+        email: "enzo@tasca.it", // this.email,
+        password: "password", // this.password,
         remember: false // this.remember,
-      })
+      });
       if (await this.login(loginDto)) {
-        this.$router.push('/')
+        this.$router.push("/");
       }
     }
   }
-})
+});
 </script>

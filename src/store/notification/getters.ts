@@ -1,12 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { GetterTree } from 'vuex'
-import { State, state } from './state'
-import { NotificationDto } from '@/models/notification.dto'
+import { GetterTree } from "vuex";
+import { State, state } from "./state";
+import { NotificationDto } from "@/models/notification.dto";
 
 type Getters = {
-  getNotifications(): NotificationDto[],
-}
+  getNotifications(): NotificationDto[];
+};
 
 export const getters: GetterTree<State, unknown> & Getters = {
-  getNotifications () { return state.notifications }
-}
+  getNotifications() {
+    return state.notifications;
+  }
+};

@@ -6,7 +6,7 @@ export class UserDto {
   isBanned!: boolean;
   role: {} | undefined;
 
-  public constructor (dto?: Partial<UserDto>) {
-    Object.assign(this, dto)
+  public constructor(dto?: Partial<UserDto>) {
+    Object.assign(this, dto);
   }
 }
