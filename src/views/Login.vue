@@ -55,7 +55,9 @@
             :label="$t('Remember me')"
           ></v-checkbox>
           <v-card-actions class="justify-center">
-            <v-btn type="submit" color="primary">{{ $t("login") }}</v-btn>
+            <v-btn type="submit" :disabled="!email" color="primary">{{
+              $t("login")
+            }}</v-btn>
           </v-card-actions>
         </v-form>
 
@@ -66,6 +68,7 @@
         </v-card-actions>
       </v-container>
     </v-flex>
+    <Notification />
   </v-layout>
 </template>
 
@@ -73,11 +76,12 @@
 import Vue from "vue";
 import { LoginDto } from "@/models/auth.dto";
 import { ActionTypes } from "@/store/auth/actions";
+import Notification from "@/components/Notification.vue";
 import { mapActions } from "vuex";
 
 export default Vue.extend({
   name: "Login",
-  components: {},
+  components: { Notification },
 
   data() {
     return {
@@ -98,8 +102,6 @@ export default Vue.extend({
     };
   },
 
-  computed: {},
-
   methods: {
     ...mapActions({
       login: `Auth/${ActionTypes.LOGIN}`
@@ -107,9 +109,9 @@ export default Vue.extend({
 
     async onSubmit() {
       const loginDto: LoginDto = new LoginDto({
-        email: "enzo@tasca.it", // this.email,
-        password: "password", // this.password,
-        remember: false // this.remember,
+        email: this.email,
+        password: this.password,
+        remember: this.remember
       });
       if (await this.login(loginDto)) {
         this.$router.push("/");

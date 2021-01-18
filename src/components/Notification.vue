@@ -4,7 +4,7 @@
   bottom: 0;
   right: 0;
   margin: 15px;
-  width: 300px;
+  width: 320px;
 }
 </style>
 
@@ -22,7 +22,7 @@
       @input="closeAlert(notification.id)"
       :value="notification.isOpen"
     >
-      {{ notification.message }}
+      {{ $t(notification.message) }}
     </v-alert>
   </div>
 </template>

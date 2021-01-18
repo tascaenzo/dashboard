@@ -63,12 +63,15 @@
         </template>
 
         <v-list>
-          <v-list-item v-for="n in 5" :key="n" @click="() => {}">
+          <v-list-item>
             <v-list-item-title>
-              <router-link to="/login"
-                >Option Logout</router-link
-              ></v-list-item-title
-            >
+              <router-link to="/login">Option Login</router-link>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title @click="logOut">
+              Option Logout
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -76,13 +79,20 @@
 
     <v-main>
       <slot />
+      <Notification />
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
+import Notification from "@/components/Notification.vue";
+import { ActionTypes } from "@/store/auth/actions";
+import Store from "@/store"; // path to store file
 export default {
   name: "Dashboard",
+  components: {
+    Notification
+  },
   data: () => ({
     selectedItem: 1,
     items: [
@@ -91,6 +101,11 @@ export default {
       { text: "Conversions", icon: "mdi-flag" }
     ],
     drawer: true
-  })
+  }),
+  methods: {
+    logOut() {
+      Store.dispatch(`Auth/${ActionTypes.LOGOUT}`);
+    }
+  }
 };
 </script>

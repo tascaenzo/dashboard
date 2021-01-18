@@ -4,6 +4,6 @@
   "Remember me": "Resta connesso",
   "E-mail is required": "E-mail richiesta",
   "E-mail must be valid": "E-mail non valida",
-  "Password is required": "Password richiesta"
-
+  "Password is required": "Password richiesta",
+  "Invalid email or password": "E-mail o password errati"
 }
