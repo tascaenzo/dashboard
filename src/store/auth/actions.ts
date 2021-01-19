@@ -8,10 +8,12 @@ import { ActionTypes as ActionNotificationTypes } from "@/store/notification/act
 import store from "@/store";
 import { URL_API } from "@/env.json";
 import axios from "axios";
+//import { UserDto } from "@/models/user.dto";
 
 export enum ActionTypes {
   LOGIN = "LOGIN",
   LOGOUT = "LOGOUT",
+  INIT_SESSION = "INIT_SESSION",
   REFRESH_TOKEN = "REFRESH_TOKEN"
 }
 
@@ -25,7 +27,10 @@ type ActionAugments = Omit<ActionContext<State, State>, "commit"> & {
 export type Actions = {
   [ActionTypes.LOGIN](context: ActionAugments, dto: LoginDto): Promise<boolean>;
   [ActionTypes.LOGOUT](context: ActionAugments): void;
-  [ActionTypes.REFRESH_TOKEN](context: ActionAugments): Promise<boolean>;
+  [ActionTypes.INIT_SESSION](context: ActionAugments): void;
+  [ActionTypes.REFRESH_TOKEN](
+    context: ActionAugments
+  ): Promise<boolean> | boolean;
 };
 
 export const actions: ActionTree<State, State> & Actions = {
@@ -71,10 +76,56 @@ export const actions: ActionTree<State, State> & Actions = {
     context.commit(MutationType.SET_TOKEN, null);
     context.commit(MutationType.SET_REFRESH_TOKEN, null);
   },
+  async [ActionTypes.INIT_SESSION](context: ActionAugments) {
+    const token = localStorage.getItem("token");
+    const refrshToken = localStorage.getItem("refreshToken");
+
+    console.log("init");
+
+    context.commit(MutationType.SET_IS_AUTH, true);
+    //context.commit(MutationType.SET_USER, user);
+    context.commit(MutationType.SET_TOKEN, token);
+    context.commit(MutationType.SET_REFRESH_TOKEN, refrshToken);
+
+    /* if (token !== null && token !== undefined) {
+      await axios
+        .get(`${URL_API}/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(response => {
+          const user = response.data;
+          context.commit(MutationType.SET_IS_AUTH, true);
+          context.commit(MutationType.SET_USER, user);
+          context.commit(MutationType.SET_TOKEN, token);
+          context.commit(MutationType.SET_REFRESH_TOKEN, refrshToken);
+        })
+        .catch((error) => {
+          context.commit(MutationType.SET_IS_AUTH, false);
+          context.commit(MutationType.SET_USER, null);
+          context.commit(MutationType.SET_TOKEN, null);
+          context.commit(MutationType.SET_REFRESH_TOKEN, null);
+        });
+    } */
+  },
   async [ActionTypes.REFRESH_TOKEN](context: ActionAugments) {
-    if(getters.getRefreshToken() === null){
+    console.log(context);
+    if (getters.getRefreshToken() === null || getters.getToken() === null) {
       return false;
     }
-  };
+    await axios
+      .get(`${URL_API}/auth/status`, {
+        headers: {
+          Authorization: `Bearer ${getters.getToken()}`
+        }
+      })
+      .then(response => {
+        const { data } = response;
+        console.log(data);
+      });
 
+    //console.log(data);
+    return true;
+  }
 };

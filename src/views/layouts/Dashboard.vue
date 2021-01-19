@@ -73,6 +73,11 @@
               Option Logout
             </v-list-item-title>
           </v-list-item>
+          <v-list-item>
+            <v-list-item-title @click="refresh">
+              Refresh
+            </v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -105,6 +110,9 @@ export default {
   methods: {
     logOut() {
       Store.dispatch(`Auth/${ActionTypes.LOGOUT}`);
+    },
+    refresh() {
+      Store.dispatch(`Auth/${ActionTypes.REFRESH_TOKEN}`);
     }
   }
 };
