@@ -3,6 +3,7 @@ import { State, state } from "./state";
 import { UserDto } from "@/models/user.dto";
 
 type Getters = {
+  getIsInit(): boolean;
   getIsAuth(): boolean;
   getUser(): UserDto | null;
   getToken(): string | null;
@@ -10,6 +11,9 @@ type Getters = {
 };
 
 export const getters: GetterTree<State, State> & Getters = {
+  getIsInit() {
+    return state.isInit;
+  },
   getIsAuth() {
     return state.isAuth;
   },

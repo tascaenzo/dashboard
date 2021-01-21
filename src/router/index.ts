@@ -3,10 +3,16 @@ import VueRouter, { NavigationGuardNext, Route, RouteConfig } from "vue-router";
 import Default from "../views/layouts/Default.vue";
 import Dashboard from "../views/layouts/Dashboard.vue";
 import { getters as AuthGetters } from "@/store/auth/getters";
+import { ActionTypes as AuthActionTypes } from "@/store/auth/actions";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
-const checkAuth = (to: Route, from: Route, next: NavigationGuardNext) => {
+const checkAuth = async (to: Route, from: Route, next: NavigationGuardNext) => {
+  if (!AuthGetters.getIsInit()) {
+    await store.dispatch(`Auth/${AuthActionTypes.INIT_SESSION}`);
+  }
+
   if (!AuthGetters.getIsAuth()) {
     next("/login");
   }
