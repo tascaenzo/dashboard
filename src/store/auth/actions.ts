@@ -9,7 +9,6 @@ import store from "@/store";
 import { URL_API } from "@/env.json";
 import axios from "axios";
 import { UserDto } from "@/models/user.dto";
-//import { UserDto } from "@/models/user.dto";
 
 export enum ActionTypes {
   LOGIN = "LOGIN",
@@ -29,15 +28,14 @@ type ActionAugments = Omit<ActionContext<State, State>, "commit"> & {
 export type Actions = {
   [ActionTypes.LOGIN](context: ActionAugments, dto: LoginDto): Promise<boolean>;
   [ActionTypes.LOGOUT](context: ActionAugments): void;
-  [ActionTypes.ME](context: ActionAugments): UserDto /*Promise<UserDto>*/;
+  [ActionTypes.ME](context: ActionAugments): Promise<UserDto> | null;
   [ActionTypes.INIT_SESSION](context: ActionAugments): void;
-  [ActionTypes.REFRESH_TOKEN](
-    context: ActionAugments
-  ): Promise<boolean> | boolean;
+  [ActionTypes.REFRESH_TOKEN](context: ActionAugments): Promise<boolean>;
 };
 
 export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.LOGIN](context: ActionAugments, dto: LoginDto) {
+    await context.dispatch(ActionTypes.LOGOUT);
     await axios
       .post(`${URL_API}/auth/login`, dto)
       .then(response => {
@@ -68,9 +66,7 @@ export const actions: ActionTree<State, State> & Actions = {
   },
   async [ActionTypes.LOGOUT](context: ActionAugments) {
     axios.delete(`${URL_API}/auth/logout`, {
-      headers: {
-        Authorization: `Bearer ${getters.getToken()}`
-      }
+      headers: { Authorization: `Bearer ${getters.getToken()}` }
     });
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
@@ -79,8 +75,25 @@ export const actions: ActionTree<State, State> & Actions = {
     context.commit(MutationTypes.SET_TOKEN, null);
     context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
   },
-  [ActionTypes.ME](context: ActionAugments) {
-    return new UserDto();
+  async [ActionTypes.ME](context: ActionAugments) {
+    return axios
+      .get(`${URL_API}/auth/me`, {
+        headers: { Authorization: `Bearer ${getters.getToken()}` }
+      })
+      .then(response => {
+        const { data } = response;
+        context.commit(MutationTypes.SET_USER, data);
+        return data;
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        context.commit(MutationTypes.SET_IS_AUTH, false);
+        context.commit(MutationTypes.SET_USER, null);
+        context.commit(MutationTypes.SET_TOKEN, null);
+        context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
+        return null;
+      });
   },
   async [ActionTypes.INIT_SESSION](context: ActionAugments) {
     const token = localStorage.getItem("token");
@@ -97,9 +110,7 @@ export const actions: ActionTree<State, State> & Actions = {
 
     await axios
       .get(`${URL_API}/auth/status`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       })
       .then(async response => {
         const { data } = response;
@@ -109,10 +120,9 @@ export const actions: ActionTree<State, State> & Actions = {
           context.commit(MutationTypes.SET_REFRESH_TOKEN, refrshToken);
 
           if (data.isRefreshable === true) {
-            await context.dispatch(`Auth/${ActionTypes.REFRESH_TOKEN}`);
+            await context.dispatch(ActionTypes.REFRESH_TOKEN);
           } else {
-            const userDto = await context.dispatch(`Auth/${ActionTypes.ME}`);
-            context.commit(MutationTypes.SET_USER, userDto);
+            await context.dispatch(ActionTypes.ME);
           }
           context.commit(MutationTypes.SET_IS_INIT, true);
           return;
@@ -125,30 +135,58 @@ export const actions: ActionTree<State, State> & Actions = {
         return;
       })
       .catch(() => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
         context.commit(MutationTypes.SET_IS_AUTH, false);
         context.commit(MutationTypes.SET_USER, null);
         context.commit(MutationTypes.SET_TOKEN, null);
         context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
         context.commit(MutationTypes.SET_IS_INIT, true);
       });
-
-    console.log("init");
   },
   async [ActionTypes.REFRESH_TOKEN](context: ActionAugments) {
-    console.log(context);
+    console.log(getters.getIsInit());
     if (getters.getRefreshToken() === null || getters.getToken() === null) {
       return false;
     }
-    await axios
+    const sessionState = await axios
       .get(`${URL_API}/auth/status`, {
-        headers: {
-          Authorization: `Bearer ${getters.getToken()}`
-        }
+        headers: { Authorization: `Bearer ${getters.getToken()}` }
       })
       .then(response => {
-        const { data } = response;
-        console.log(data);
+        return response.data;
       });
-    return true;
+    if (sessionState.isRefreshable) {
+      await axios
+        .put(`${URL_API}/auth/refresh`, {
+          token: getters.getToken(),
+          refreshToken: getters.getRefreshToken()
+        })
+        .then(response => {
+          const { data } = response;
+          context.commit(MutationTypes.SET_IS_AUTH, true);
+          context.commit(MutationTypes.SET_USER, data.user);
+          context.commit(MutationTypes.SET_TOKEN, data.token);
+          context.commit(MutationTypes.SET_REFRESH_TOKEN, data.refreshToken);
+        })
+        .catch(() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+          context.commit(MutationTypes.SET_IS_AUTH, false);
+          context.commit(MutationTypes.SET_USER, null);
+          context.commit(MutationTypes.SET_TOKEN, null);
+          context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
+        });
+    } else {
+      if (sessionState.isExpired && !sessionState.isRefreshable) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        context.commit(MutationTypes.SET_IS_AUTH, false);
+        context.commit(MutationTypes.SET_USER, null);
+        context.commit(MutationTypes.SET_TOKEN, null);
+        context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
+      }
+    }
+    return getters.getIsAuth();
   }
 };

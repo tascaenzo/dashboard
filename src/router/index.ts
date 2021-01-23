@@ -13,9 +13,9 @@ const checkAuth = async (to: Route, from: Route, next: NavigationGuardNext) => {
     await store.dispatch(`Auth/${AuthActionTypes.INIT_SESSION}`);
   }
 
-  if (!AuthGetters.getIsAuth()) {
+  /*if (!AuthGetters.getIsAuth()) {
     next("/login");
-  }
+  }*/
   next();
 };
 
