@@ -1,34 +1,26 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app>
-      <template v-slot:prepend>
-        <v-list-item>
-          <v-list-item-avatar>
-            <img src="https://randomuser.me/api/portraits/women/81.jpg" />
-          </v-list-item-avatar>
+      <v-list-item>
+        <v-card-actions class="justify-center">
+          <img alt="Logo" height="60" src="@/assets/img/logo.webp" />
+        </v-card-actions>
+      </v-list-item>
 
-          <v-list-item-content>
-            <v-list-item-title>Jane Smith</v-list-item-title>
-            <v-list-item-subtitle>Logged In</v-list-item-subtitle>
-          </v-list-item-content>
-
-          <v-btn icon @click.stop="drawer = !drawer">
-            <v-icon>mdi-chevron-left</v-icon>
-          </v-btn>
-        </v-list-item>
-      </template>
-
-      <v-divider></v-divider>
+      <!--v-divider /-->
 
       <v-list flat>
-        <v-subheader>REPORTS</v-subheader>
-        <v-list-item-group v-model="selectedItem" color="primary">
+        <!--v-subheader>REPORTS</v-subheader-->
+        <v-list-item-group model="selectedItem" color="primary">
           <v-list-item v-for="(item, i) in items" :key="i">
             <v-list-item-icon>
               <v-icon v-text="item.icon"></v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title v-text="item.text"></v-list-item-title>
+              <v-list-item-title
+                @click="redirect(item)"
+                v-text="item.text"
+              ></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -36,19 +28,11 @@
     </v-navigation-drawer>
 
     <v-app-bar app color="primary" dark>
-      <v-app-bar-nav-icon
-        v-if="!drawer"
-        @click="drawer = !drawer"
-      ></v-app-bar-nav-icon>
-      <v-img
-        alt="Vuetify Logo"
-        class="shrink mr-2"
-        contain
-        src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-        transition="scale-transition"
-        width="40"
-      />
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-btn icon @click.stop="drawer = !drawer">
+        <v-icon>{{ drawer ? "mdi-format-align-left" : "mdi-menu" }}</v-icon>
+      </v-btn>
+
+      <v-toolbar-title>Dashboard</v-toolbar-title>
 
       <v-spacer />
 
@@ -82,7 +66,8 @@
       </v-menu>
     </v-app-bar>
 
-    <v-main>
+    <v-main class="grey lighten-5">
+      <div class="green accent-4">ciaop</div>
       <slot />
       <Notification />
     </v-main>
@@ -90,10 +75,12 @@
 </template>
 
 <script lang="ts">
+import Vue from "vue";
 import Notification from "@/components/Notification.vue";
 import { ActionTypes } from "@/store/auth/actions";
 import Store from "@/store"; // path to store file
-export default {
+
+export default Vue.extend({
   name: "Dashboard",
   components: {
     Notification
@@ -101,13 +88,18 @@ export default {
   data: () => ({
     selectedItem: 1,
     items: [
-      { text: "Real-Time", icon: "mdi-clock" },
-      { text: "Audience", icon: "mdi-account" },
-      { text: "Conversions", icon: "mdi-flag" }
+      { text: "Dashboard", icon: "mdi-view-dashboard", path: "/" },
+      { text: "Users", icon: "mdi-account-multiple", path: "/users" },
+      { text: "Audience", icon: "mdi-account", path: "/" },
+      { text: "Conversions", icon: "mdi-flag", path: "/" }
     ],
     drawer: true
   }),
   methods: {
+    redirect(element: { path: string }) {
+      console.log(element);
+      this.$router.push(element.path);
+    },
     logOut() {
       Store.dispatch(`Auth/${ActionTypes.LOGOUT}`);
     },
@@ -115,5 +107,5 @@ export default {
       Store.dispatch(`Auth/${ActionTypes.REFRESH_TOKEN}`);
     }
   }
-};
+});
 </script>

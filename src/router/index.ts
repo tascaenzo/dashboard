@@ -13,9 +13,9 @@ const checkAuth = async (to: Route, from: Route, next: NavigationGuardNext) => {
     await store.dispatch(`Auth/${AuthActionTypes.INIT_SESSION}`);
   }
 
-  /*if (!AuthGetters.getIsAuth()) {
+  if (!AuthGetters.getIsAuth()) {
     next("/login");
-  }*/
+  }
   next();
 };
 
@@ -24,13 +24,13 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Home",
     component: () => import("@/views/Home.vue"),
-    beforeEnter: checkAuth,
+    //beforeEnter: checkAuth,
     meta: { layout: Dashboard }
   },
   {
-    path: "/about",
-    name: "About",
-    component: () => import("@/views/About.vue"),
+    path: "/users",
+    name: "User",
+    component: () => import("@/views/Users.vue"),
     beforeEnter: checkAuth,
     meta: { layout: Dashboard }
   },

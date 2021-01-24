@@ -27,7 +27,7 @@
     <v-flex lg5 md6 sm8 xs12 form>
       <v-container pa-10 py-16>
         <v-card-actions class="justify-center">
-          <img alt="Login Avatar" height="180" src="@/assets/img/avatar.png" />
+          <img alt="Login Avatar" height="180" src="@/assets/img/avatar.webp" />
         </v-card-actions>
 
         <v-form @submit.prevent="onSubmit" lazy-validation>
