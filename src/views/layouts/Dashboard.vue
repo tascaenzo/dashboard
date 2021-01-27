@@ -1,3 +1,9 @@
+<style>
+.main {
+  position: relative;
+  top: -190px;
+}
+</style>
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app>
@@ -7,10 +13,7 @@
         </v-card-actions>
       </v-list-item>
 
-      <!--v-divider /-->
-
       <v-list flat>
-        <!--v-subheader>REPORTS</v-subheader-->
         <v-list-item-group model="selectedItem" color="primary">
           <v-list-item v-for="(item, i) in items" :key="i">
             <v-list-item-icon>
@@ -27,7 +30,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app color="primary" dark>
+    <v-app-bar color="primary" app dark elevate-on-scroll>
       <v-btn icon @click.stop="drawer = !drawer">
         <v-icon>{{ drawer ? "mdi-format-align-left" : "mdi-menu" }}</v-icon>
       </v-btn>
@@ -58,17 +61,17 @@
             </v-list-item-title>
           </v-list-item>
           <v-list-item>
-            <v-list-item-title @click="refresh">
-              Refresh
-            </v-list-item-title>
+            <v-list-item-title @click="refresh"> Refresh </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
 
-    <v-main class="grey lighten-5">
-      <div class="green accent-4">ciaop</div>
-      <slot />
+    <v-main class="background">
+      <div style="height: 170px;" class="primary" />
+      <v-container class="main px-6">
+        <slot />
+      </v-container>
       <Notification />
     </v-main>
   </v-app>
