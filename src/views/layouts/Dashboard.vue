@@ -1,20 +1,12 @@
 <style>
 .main {
-  position: absolute;
-  top: -5px;
+  position: relative;
+  top: -220px;
+  margin-bottom: -220px;
 }
 .background-head {
-  /*position: absolute;
-  left: 0px;
-  top: 0px;
-  z-index: -1;
-  height: 170px;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  z-index: -1;
-  width: 100%;*/
   height: 200px;
+  width: 100%;
 }
 </style>
 <template>
@@ -48,9 +40,9 @@
         <v-icon>{{ drawer ? "mdi-format-align-left" : "mdi-menu" }}</v-icon>
       </v-btn>
 
-      <v-container>
+      <div style="width: 100%">
         <v-text-field
-          style="width: 400px;"
+          style="width: 450px;"
           class="mt-3 pt-3"
           dense
           rounded
@@ -59,7 +51,7 @@
           prepend-inner-icon="mdi-magnify"
           filled
         ></v-text-field>
-      </v-container>
+      </div>
 
       <v-menu left bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -91,7 +83,7 @@
 
     <v-main class="background">
       <div class="primary background-head" />
-      <v-container class="main px-6">
+      <v-container class="main">
         <slot />
       </v-container>
       <Notification />
