@@ -1,7 +1,20 @@
 <style>
 .main {
-  position: relative;
-  top: -190px;
+  position: absolute;
+  top: -5px;
+}
+.background-head {
+  /*position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
+  height: 170px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
+  width: 100%;*/
+  height: 200px;
 }
 </style>
 <template>
@@ -35,9 +48,18 @@
         <v-icon>{{ drawer ? "mdi-format-align-left" : "mdi-menu" }}</v-icon>
       </v-btn>
 
-      <v-toolbar-title>Dashboard</v-toolbar-title>
-
-      <v-spacer />
+      <v-container>
+        <v-text-field
+          style="width: 400px;"
+          class="mt-3 pt-3"
+          dense
+          rounded
+          label="Search"
+          solo-inverted
+          prepend-inner-icon="mdi-magnify"
+          filled
+        ></v-text-field>
+      </v-container>
 
       <v-menu left bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -68,7 +90,7 @@
     </v-app-bar>
 
     <v-main class="background">
-      <div style="height: 170px;" class="primary" />
+      <div class="primary background-head" />
       <v-container class="main px-6">
         <slot />
       </v-container>

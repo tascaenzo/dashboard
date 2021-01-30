@@ -31,7 +31,7 @@ const routes: Array<RouteConfig> = [
     path: "/users",
     name: "User",
     component: () => import("@/views/Users.vue"),
-    beforeEnter: checkAuth,
+    //beforeEnter: checkAuth,
     meta: { layout: Dashboard }
   },
   {
