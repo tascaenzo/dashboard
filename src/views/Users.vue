@@ -22,14 +22,9 @@
         :items-per-page="itemsPerPage"
         hide-default-footer
         :search="search"
-        class="elevation-1"
+        class="elevation-3"
         @page-count="pageCount = $event"
       >
-        <!-- TOP TABLE -->
-        <template v-slot:top>
-          <v-toolbar flat> </v-toolbar>
-        </template>
-
         <template v-slot:[`item.actions`]="{ item }">
           <v-col>
             <v-btn
@@ -73,7 +68,6 @@ export default {
     headers: [
       {
         text: "Dessert (100g serving)",
-        align: "start",
         sortable: false,
         value: "name"
       },

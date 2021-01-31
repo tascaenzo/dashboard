@@ -1,8 +1,8 @@
 <style>
 .main {
   position: relative;
-  top: -220px;
-  margin-bottom: -220px;
+  top: -221px;
+  margin-bottom: -221px;
 }
 .background-head {
   height: 200px;
