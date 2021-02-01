@@ -6,7 +6,6 @@ import { LoginDto } from "@/models/auth.dto";
 import { NotificationDto } from "@/models/notification.dto";
 import { ActionTypes as ActionNotificationTypes } from "@/store/notification/actions";
 import store from "@/store";
-import { URL_API } from "@/env.json";
 import axios from "axios";
 import { UserDto } from "@/models/user.dto";
 
@@ -37,7 +36,7 @@ export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.LOGIN](context: ActionAugments, dto: LoginDto) {
     await context.dispatch(ActionTypes.LOGOUT);
     await axios
-      .post(`${URL_API}/auth/login`, dto)
+      .post("/auth/login", dto)
       .then(response => {
         const { data } = response;
         context.commit(MutationTypes.SET_IS_AUTH, true);
@@ -47,6 +46,10 @@ export const actions: ActionTree<State, State> & Actions = {
 
         localStorage.setItem("token", data.token);
         localStorage.setItem("refreshToken", data.refreshToken);
+
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${getters.getToken()}`;
       })
       .catch(error => {
         const { data } = error.response;
@@ -65,7 +68,7 @@ export const actions: ActionTree<State, State> & Actions = {
     return getters.getIsAuth();
   },
   async [ActionTypes.LOGOUT](context: ActionAugments) {
-    axios.delete(`${URL_API}/auth/logout`, {
+    axios.delete("/auth/logout", {
       headers: { Authorization: `Bearer ${getters.getToken()}` }
     });
     localStorage.removeItem("token");
@@ -74,10 +77,11 @@ export const actions: ActionTree<State, State> & Actions = {
     context.commit(MutationTypes.SET_USER, null);
     context.commit(MutationTypes.SET_TOKEN, null);
     context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
+    axios.defaults.headers.common["Authorization"] = null;
   },
   async [ActionTypes.ME](context: ActionAugments) {
     return axios
-      .get(`${URL_API}/auth/me`, {
+      .get("/auth/me", {
         headers: { Authorization: `Bearer ${getters.getToken()}` }
       })
       .then(response => {
@@ -109,7 +113,7 @@ export const actions: ActionTree<State, State> & Actions = {
     }
 
     await axios
-      .get(`${URL_API}/auth/status`, {
+      .get("/auth/status", {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(async response => {
@@ -150,7 +154,7 @@ export const actions: ActionTree<State, State> & Actions = {
       return false;
     }
     const sessionState = await axios
-      .get(`${URL_API}/auth/status`, {
+      .get("/auth/status", {
         headers: { Authorization: `Bearer ${getters.getToken()}` }
       })
       .then(response => {
@@ -158,7 +162,7 @@ export const actions: ActionTree<State, State> & Actions = {
       });
     if (sessionState.isRefreshable) {
       await axios
-        .put(`${URL_API}/auth/refresh`, {
+        .put("/auth/refresh", {
           token: getters.getToken(),
           refreshToken: getters.getRefreshToken()
         })
@@ -168,6 +172,9 @@ export const actions: ActionTree<State, State> & Actions = {
           context.commit(MutationTypes.SET_USER, data.user);
           context.commit(MutationTypes.SET_TOKEN, data.token);
           context.commit(MutationTypes.SET_REFRESH_TOKEN, data.refreshToken);
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${getters.getToken()}`;
         })
         .catch(() => {
           localStorage.removeItem("token");

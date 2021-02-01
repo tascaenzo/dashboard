@@ -5,7 +5,6 @@ import { State } from "./state";
 import { NotificationDto } from "@/models/notification.dto";
 import { ActionTypes as ActionNotificationTypes } from "@/store/notification/actions";
 import store from "@/store";
-import { URL_API } from "@/env.json";
 import axios from "axios";
 
 export enum ActionTypes {
@@ -39,6 +38,9 @@ export const actions: ActionTree<State, State> & Actions = {
     return {};
   },
   async [ActionTypes.READ_ALL](context: ActionAugments) {
+    console.log("test");
+    const result = await axios.get("/users");
+    console.log(result);
     return {};
   },
   async [ActionTypes.UPDATE](context: ActionAugments, dto: {}) {
