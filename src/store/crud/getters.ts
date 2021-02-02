@@ -4,6 +4,7 @@ import { State, state } from "./state";
 type Getters = {
   getItem(): {};
   getItems(): {}[];
+  getModelPath(): string;
 };
 
 export const getters: GetterTree<State, unknown> & Getters = {
@@ -12,5 +13,8 @@ export const getters: GetterTree<State, unknown> & Getters = {
   },
   getItems() {
     return state.items;
+  },
+  getModelPath() {
+    return state.modelPath;
   }
 };

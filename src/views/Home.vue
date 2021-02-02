@@ -26,7 +26,9 @@ export default Vue.extend({
   },
   methods: {
     async acction() {
-      this.$store.dispatch("READ_ALL");
+      this.$store.commit("SET_MODEL_PATH", "users");
+      await this.$store.dispatch("READ_ALL");
+      console.log(this.$store.getters.getItems);
     },
     async addMsg() {
       this.$store.dispatch(

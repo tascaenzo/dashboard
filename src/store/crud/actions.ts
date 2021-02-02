@@ -2,9 +2,9 @@ import { ActionContext, ActionTree } from "vuex";
 import { Mutations, MutationTypes } from "./mutations";
 import { getters } from "./getters";
 import { State } from "./state";
-import { NotificationDto } from "@/models/notification.dto";
-import { ActionTypes as ActionNotificationTypes } from "@/store/notification/actions";
-import store from "@/store";
+//import { NotificationDto } from "@/models/notification.dto";
+//import { ActionTypes as ActionNotificationTypes } from "@/store/notification/actions";
+//import store from "@/store";
 import axios from "axios";
 
 export enum ActionTypes {
@@ -27,26 +27,35 @@ export type Actions = {
   [ActionTypes.READ](context: ActionAugments, id: string): {};
   [ActionTypes.READ_ALL](context: ActionAugments): Promise<{}> | null;
   [ActionTypes.UPDATE](context: ActionAugments, dto: {}): Promise<{}>;
-  [ActionTypes.DELETE](context: ActionAugments, id: string): Promise<boolean>;
+  //[ActionTypes.DELETE](context: ActionAugments, id: string): Promise<boolean>;
 };
 
 export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.CREATE](context: ActionAugments, dto: {}) {
-    return {};
+    await axios.post(getters.getModelPath(), dto).then(data => {
+      context.commit(MutationTypes.SET_ITEM, data.data);
+    });
+    return getters.getItem();
   },
   async [ActionTypes.READ](context: ActionAugments, id: string) {
-    return {};
+    await axios.get(`${getters.getModelPath()}/${id}`).then(data => {
+      context.commit(MutationTypes.SET_ITEMS, data.data);
+    });
+    return getters.getItem();
   },
   async [ActionTypes.READ_ALL](context: ActionAugments) {
-    console.log("test");
-    const result = await axios.get("/users");
-    console.log(result);
-    return {};
+    await axios.get(getters.getModelPath()).then(data => {
+      context.commit(MutationTypes.SET_ITEMS, data.data);
+    });
+    return getters.getItems();
   },
-  async [ActionTypes.UPDATE](context: ActionAugments, dto: {}) {
-    return {};
-  },
-  async [ActionTypes.DELETE](context: ActionAugments, id: string) {
-    return true;
+  async [ActionTypes.UPDATE](context: ActionAugments, dto: { id: string }) {
+    await axios.put(`${getters.getModelPath()}/${dto.id}`, dto).then(data => {
+      context.commit(MutationTypes.SET_ITEMS, data.data);
+    });
+    return getters.getItem();
   }
+  /* async [ActionTypes.DELETE](context: ActionAugments, id: string) {
+    return true;
+  } */
 };
