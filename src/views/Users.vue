@@ -1,9 +1,17 @@
 <template>
-  <CrudTable title="Users" :headers="test" />
+  <CrudTable
+    title="Users - Table"
+    :headers="test"
+    :create="true"
+    :update="true"
+    :remove="true"
+    :exportTable="true"
+  />
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import i18n from "@/plugins/i18n";
 import CrudTable from "@/components/CrudTable.vue";
 
 export default Vue.extend({
@@ -21,7 +29,7 @@ export default Vue.extend({
       { text: "Fat (g)", value: "fat" },
       { text: "Carbs (g)", value: "carbs" },
       { text: "Protein (g)", value: "protein" },
-      { text: "Actions", value: "actions", sortable: false }
+      { text: `${i18n.t("Actions")}`, value: "actions", sortable: false }
     ]
   })
 });

@@ -5,5 +5,7 @@
   "E-mail is required": "E-mail richiesta",
   "E-mail must be valid": "E-mail non valida",
   "Password is required": "Password richiesta",
-  "Invalid email or password": "E-mail o password errati"
+  "Invalid email or password": "E-mail o password errati",
+  "Users - Table": "Tabella - Utenti",
+  "Actions": "Azioni"
 }
