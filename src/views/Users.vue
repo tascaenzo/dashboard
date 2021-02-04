@@ -1,6 +1,7 @@
 <template>
   <CrudTable
     title="Users - Table"
+    path="users"
     :headers="test"
     :create="true"
     :update="true"
@@ -21,14 +22,13 @@ export default Vue.extend({
   data: () => ({
     test: [
       {
-        text: "Dessert (100g serving)",
+        text: "ID",
         sortable: false,
-        value: "name"
+        value: "id"
       },
-      { text: "Calories", value: "calories" },
-      { text: "Fat (g)", value: "fat" },
-      { text: "Carbs (g)", value: "carbs" },
-      { text: "Protein (g)", value: "protein" },
+      { text: "Nome", value: "name" },
+      { text: "Cognome", value: "surname" },
+      { text: "E-mail", value: "email" },
       { text: `${i18n.t("Actions")}`, value: "actions", sortable: false }
     ]
   })
