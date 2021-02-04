@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter, { NavigationGuardNext, Route, RouteConfig } from "vue-router";
-import Default from "../views/layouts/Default.vue";
-import Dashboard from "../views/layouts/Dashboard.vue";
+import Default from "../layouts/Default.vue";
+import Dashboard from "../layouts/Dashboard.vue";
 import { getters as AuthGetters } from "@/store/auth/getters";
 import { ActionTypes as AuthActionTypes } from "@/store/auth/actions";
 import store from "@/store";
@@ -24,14 +24,14 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Home",
     component: () => import("@/views/Home.vue"),
-    //beforeEnter: checkAuth,
+    beforeEnter: checkAuth,
     meta: { layout: Dashboard }
   },
   {
     path: "/users",
     name: "User",
     component: () => import("@/views/Users.vue"),
-    //beforeEnter: checkAuth,
+    beforeEnter: checkAuth,
     meta: { layout: Dashboard }
   },
   {
