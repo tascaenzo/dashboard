@@ -12,9 +12,9 @@ import { UserDto } from "@/models/user.dto";
 export enum ActionTypes {
   LOGIN = "LOGIN",
   LOGOUT = "LOGOUT",
-  ME = "ME",
   INIT_SESSION = "INIT_SESSION",
-  REFRESH_TOKEN = "REFRESH_TOKEN"
+  REFRESH_TOKEN = "REFRESH_TOKEN",
+  ME = "ME"
 }
 
 type ActionAugments = Omit<ActionContext<State, State>, "commit"> & {
@@ -25,14 +25,66 @@ type ActionAugments = Omit<ActionContext<State, State>, "commit"> & {
 };
 
 export type Actions = {
+  [ActionTypes.INIT_SESSION](context: ActionAugments): void;
   [ActionTypes.LOGIN](context: ActionAugments, dto: LoginDto): Promise<boolean>;
   [ActionTypes.LOGOUT](context: ActionAugments): void;
   [ActionTypes.ME](context: ActionAugments): Promise<UserDto> | null;
-  [ActionTypes.INIT_SESSION](context: ActionAugments): void;
   [ActionTypes.REFRESH_TOKEN](context: ActionAugments): Promise<boolean>;
 };
 
 export const actions: ActionTree<State, State> & Actions = {
+  async [ActionTypes.INIT_SESSION](context: ActionAugments) {
+    const token = localStorage.getItem("token");
+    const refrshToken = localStorage.getItem("refreshToken");
+
+    if (token === null || token === undefined) {
+      context.commit(MutationTypes.SET_IS_AUTH, false);
+      context.commit(MutationTypes.SET_USER, null);
+      context.commit(MutationTypes.SET_TOKEN, null);
+      context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
+      context.commit(MutationTypes.SET_IS_INIT, true);
+      return;
+    }
+
+    await axios
+      .get("/auth/status", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(async response => {
+        const { data } = response;
+        if (data.isValid === true) {
+          context.commit(MutationTypes.SET_IS_AUTH, !data.isRefreshable);
+          context.commit(MutationTypes.SET_TOKEN, token);
+          context.commit(MutationTypes.SET_REFRESH_TOKEN, refrshToken);
+
+          if (data.isRefreshable === true) {
+            await context.dispatch(ActionTypes.REFRESH_TOKEN);
+          } else {
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${getters.getToken()}`;
+            await context.dispatch(ActionTypes.ME);
+          }
+          context.commit(MutationTypes.SET_IS_INIT, true);
+          return;
+        }
+        context.commit(MutationTypes.SET_IS_AUTH, false);
+        context.commit(MutationTypes.SET_USER, null);
+        context.commit(MutationTypes.SET_TOKEN, null);
+        context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
+        context.commit(MutationTypes.SET_IS_INIT, true);
+        return;
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        context.commit(MutationTypes.SET_IS_AUTH, false);
+        context.commit(MutationTypes.SET_USER, null);
+        context.commit(MutationTypes.SET_TOKEN, null);
+        context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
+        context.commit(MutationTypes.SET_IS_INIT, true);
+      });
+  },
   async [ActionTypes.LOGIN](context: ActionAugments, dto: LoginDto) {
     await context.dispatch(ActionTypes.LOGOUT);
     await axios
@@ -97,55 +149,6 @@ export const actions: ActionTree<State, State> & Actions = {
         context.commit(MutationTypes.SET_TOKEN, null);
         context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
         return null;
-      });
-  },
-  async [ActionTypes.INIT_SESSION](context: ActionAugments) {
-    const token = localStorage.getItem("token");
-    const refrshToken = localStorage.getItem("refreshToken");
-
-    if (token === null || token === undefined) {
-      context.commit(MutationTypes.SET_IS_AUTH, false);
-      context.commit(MutationTypes.SET_USER, null);
-      context.commit(MutationTypes.SET_TOKEN, null);
-      context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
-      context.commit(MutationTypes.SET_IS_INIT, true);
-      return;
-    }
-
-    await axios
-      .get("/auth/status", {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then(async response => {
-        const { data } = response;
-        if (data.isValid === true) {
-          context.commit(MutationTypes.SET_IS_AUTH, !data.isRefreshable);
-          context.commit(MutationTypes.SET_TOKEN, token);
-          context.commit(MutationTypes.SET_REFRESH_TOKEN, refrshToken);
-
-          if (data.isRefreshable === true) {
-            await context.dispatch(ActionTypes.REFRESH_TOKEN);
-          } else {
-            await context.dispatch(ActionTypes.ME);
-          }
-          context.commit(MutationTypes.SET_IS_INIT, true);
-          return;
-        }
-        context.commit(MutationTypes.SET_IS_AUTH, false);
-        context.commit(MutationTypes.SET_USER, null);
-        context.commit(MutationTypes.SET_TOKEN, null);
-        context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
-        context.commit(MutationTypes.SET_IS_INIT, true);
-        return;
-      })
-      .catch(() => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("refreshToken");
-        context.commit(MutationTypes.SET_IS_AUTH, false);
-        context.commit(MutationTypes.SET_USER, null);
-        context.commit(MutationTypes.SET_TOKEN, null);
-        context.commit(MutationTypes.SET_REFRESH_TOKEN, null);
-        context.commit(MutationTypes.SET_IS_INIT, true);
       });
   },
   async [ActionTypes.REFRESH_TOKEN](context: ActionAugments) {
