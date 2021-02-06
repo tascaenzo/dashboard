@@ -45,7 +45,6 @@ export const actions: ActionTree<State, State> & Actions = {
       context.commit(MutationTypes.SET_IS_INIT, true);
       return;
     }
-
     await axios
       .get("/auth/status", {
         headers: { Authorization: `Bearer ${token}` }

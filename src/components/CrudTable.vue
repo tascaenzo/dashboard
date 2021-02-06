@@ -33,7 +33,7 @@
         :page.sync="page"
         :items-per-page="itemsPerPage"
         hide-default-footer
-        :search="search"
+        :search="searchKey"
         class="elevation-3"
         @page-count="pageCount = $event"
       >
@@ -76,7 +76,8 @@ import Vue from "vue";
 import { ActionTypes } from "@/store/crud/actions";
 import { MutationTypes } from "@/store/crud/mutations";
 import { mapActions, mapMutations, mapState } from "vuex";
-import { state } from "@/store/crud/state";
+import { state as crudState } from "@/store/crud/state";
+import { state as searchState } from "@/store/search/state";
 
 export default Vue.extend({
   name: "CrudTable",
@@ -108,7 +109,8 @@ export default Vue.extend({
 
   computed: {
     ...mapState({
-      items: () => state.items
+      items: () => crudState.items,
+      searchKey: () => searchState.key
     })
   },
 

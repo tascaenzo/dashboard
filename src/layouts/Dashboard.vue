@@ -40,18 +40,7 @@
         <v-icon>{{ drawer ? "mdi-format-align-left" : "mdi-menu" }}</v-icon>
       </v-btn>
 
-      <div style="width: 100%">
-        <v-text-field
-          style="width: 450px;"
-          class="mt-3 pt-3"
-          dense
-          rounded
-          label="Search"
-          solo-inverted
-          prepend-inner-icon="mdi-magnify"
-          filled
-        ></v-text-field>
-      </div>
+      <SearchBar />
 
       <v-menu left bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -94,13 +83,15 @@
 <script lang="ts">
 import Vue from "vue";
 import Notification from "@/components/Notification.vue";
+import SearchBar from "@/components/SearchBar.vue";
 import { ActionTypes } from "@/store/auth/actions";
-import Store from "@/store"; // path to store file
+import Store from "@/store";
 
 export default Vue.extend({
   name: "Dashboard",
   components: {
-    Notification
+    Notification,
+    SearchBar
   },
   data: () => ({
     selectedItem: 1,

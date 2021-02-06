@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import Auth from "./auth";
 import Notification from "./notification";
 import Crud from "./crud";
+import Search from "./search";
 
 Vue.use(Vuex);
 
@@ -13,7 +14,8 @@ export default new Vuex.Store({
   modules: {
     Auth,
     Notification,
-    Crud
+    Crud,
+    Search
   },
   strict: debug
 });
