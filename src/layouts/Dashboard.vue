@@ -1,11 +1,11 @@
 <style>
 .main {
   position: relative;
-  top: -221px;
-  margin-bottom: -221px;
+  top: -156px;
+  margin-bottom: -156px;
 }
 .background-head {
-  height: 200px;
+  height: 130px;
   width: 100%;
 }
 </style>

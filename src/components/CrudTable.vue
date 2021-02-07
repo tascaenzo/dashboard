@@ -4,7 +4,7 @@
       <v-col style="color: #f5f5f5" class="text-h6 pt-12">
         {{ $t(title) }}
       </v-col>
-      <v-col style="text-align: right;">
+      <v-col style="text-align: right">
         <v-btn
           v-if="exportTable"
           elevation="5"
@@ -38,11 +38,36 @@
         @page-count="pageCount = $event"
       >
         <template v-slot:[`item.actions`]="{ item }">
+          <v-dialog v-model="dialogDelete" persistent max-width="290">
+            <v-card>
+              <v-card-title class="headline">
+                Use Google's location service?
+              </v-card-title>
+              <v-card-text
+                >Let Google help apps determine location. This means sending
+                anonymous location data to Google, even when no apps are
+                running.</v-card-text
+              >
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="green darken-1"
+                  text
+                  @click="dialogDelete = false"
+                >
+                  Disagree
+                </v-btn>
+                <v-btn color="green darken-1" text @click="deleteItem(item)">
+                  Agree
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           <v-col>
             <v-btn
               v-if="remove"
               class="mx-2"
-              @click="deleteItem(item)"
+              @click="dialogDelete = true"
               fab
               dark
               small
@@ -89,7 +114,7 @@ export default Vue.extend({
     create: Boolean,
     remove: Boolean,
     update: Boolean,
-    exportTable: Boolean
+    exportTable: Boolean,
   },
 
   async mounted() {
@@ -102,25 +127,27 @@ export default Vue.extend({
     pageCount: 5,
     itemsPerPage: 20,
     totalVisible: 7,
-    dialog: false,
     dialogDelete: false,
-    search: ""
+    search: "",
   }),
 
   computed: {
     ...mapState({
       items: () => crudState.items,
-      searchKey: () => searchState.key
-    })
+      searchKey: () => searchState.key,
+    }),
   },
 
   methods: {
     ...mapMutations({
-      initCrud: `Crud/${MutationTypes.SET_MODEL_PATH}`
+      initCrud: `Crud/${MutationTypes.SET_MODEL_PATH}`,
     }),
     ...mapActions({
-      fetchData: `Crud/${ActionTypes.READ_ALL}`
-    })
-  }
+      fetchData: `Crud/${ActionTypes.READ_ALL}`,
+    }),
+    deleteItem() {
+      this.dialogDelete = false;
+    }
+  },
 });
 </script>
