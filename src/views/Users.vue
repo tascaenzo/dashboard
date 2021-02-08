@@ -3,6 +3,7 @@
     title="Users - Table"
     path="users"
     :headers="test"
+    :deleteAlertKey="test1"
     :create="true"
     :update="true"
     :remove="true"
@@ -20,6 +21,7 @@ export default Vue.extend({
   components: { CrudTable },
 
   data: () => ({
+    test1: ["id", "email", "name", "surname"],
     test: [
       {
         text: "ID",
@@ -29,7 +31,7 @@ export default Vue.extend({
       { text: "Nome", value: "name" },
       { text: "Cognome", value: "surname" },
       { text: "E-mail", value: "email" },
-      { text: `${i18n.t("Actions")}`, value: "actions", sortable: false }
+      { text: `${i18n.t("ACTIONS")}`, value: "actions", sortable: false }
     ]
   })
 });

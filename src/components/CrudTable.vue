@@ -6,6 +6,15 @@
       </v-col>
       <v-col style="text-align: right">
         <v-btn
+          @onClick="fetchData"
+          elevation="5"
+          color="blue-grey"
+          class="ma-2 white--text"
+          fab
+        >
+          <v-icon dark>mdi-refresh</v-icon>
+        </v-btn>
+        <v-btn
           v-if="exportTable"
           elevation="5"
           color="blue-grey"
@@ -38,36 +47,11 @@
         @page-count="pageCount = $event"
       >
         <template v-slot:[`item.actions`]="{ item }">
-          <v-dialog v-model="dialogDelete" persistent max-width="290">
-            <v-card>
-              <v-card-title class="headline">
-                Use Google's location service?
-              </v-card-title>
-              <v-card-text
-                >Let Google help apps determine location. This means sending
-                anonymous location data to Google, even when no apps are
-                running.</v-card-text
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="green darken-1"
-                  text
-                  @click="dialogDelete = false"
-                >
-                  Disagree
-                </v-btn>
-                <v-btn color="green darken-1" text @click="deleteItem(item)">
-                  Agree
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
           <v-col>
             <v-btn
               v-if="remove"
               class="mx-2"
-              @click="dialogDelete = true"
+              @click="openAlert(item)"
               fab
               dark
               small
@@ -93,6 +77,41 @@
         />
       </div>
     </div>
+    <v-dialog v-model="dialogDelete" persistent max-width="500">
+      <v-card>
+        <v-card-title class="red">
+          <v-icon dark size="42" class="mr-4"> mdi-delete-forever </v-icon>
+          <h2 class="display-1 white--text font-weight-light">
+            {{ $t("DELETE") }}
+          </h2>
+        </v-card-title>
+        <v-container>
+          <v-row>
+            <v-col>
+              <v-row class="text" tag="v-card-text">
+                <template v-for="key in deleteAlertKey">
+                  <v-col class="text-left" tag="strong" cols="3" :key="key">
+                    {{ $t(key.toUpperCase()).toUpperCase() }}
+                  </v-col>
+                  <v-col cols="7" :key="key.toUpperCase()">{{
+                    alertItem[key]
+                  }}</v-col>
+                </template>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" text @click="dialogDelete = false">
+              {{ $t("CANCEL") }}
+            </v-btn>
+            <v-btn color="red darken-1" text @click="deleteItem">
+              {{ $t("DELETE") }}
+            </v-btn>
+          </v-card-actions>
+        </v-container>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -111,10 +130,11 @@ export default Vue.extend({
     title: String,
     path: String,
     headers: Array,
+    deleteAlertKey: Array,
     create: Boolean,
     remove: Boolean,
     update: Boolean,
-    exportTable: Boolean,
+    exportTable: Boolean
   },
 
   async mounted() {
@@ -129,25 +149,32 @@ export default Vue.extend({
     totalVisible: 7,
     dialogDelete: false,
     search: "",
+    alertItem: { id: String }
   }),
 
   computed: {
     ...mapState({
       items: () => crudState.items,
-      searchKey: () => searchState.key,
-    }),
+      searchKey: () => searchState.key
+    })
   },
 
   methods: {
     ...mapMutations({
-      initCrud: `Crud/${MutationTypes.SET_MODEL_PATH}`,
+      initCrud: `Crud/${MutationTypes.SET_MODEL_PATH}`
     }),
     ...mapActions({
       fetchData: `Crud/${ActionTypes.READ_ALL}`,
+      deleteAction: `Crud/${ActionTypes.DELETE}`
     }),
+    openAlert(item: { id: StringConstructor }) {
+      this.alertItem = item;
+      this.dialogDelete = true;
+    },
     deleteItem() {
       this.dialogDelete = false;
+      this.deleteAction(this.alertItem.id);
     }
-  },
+  }
 });
 </script>

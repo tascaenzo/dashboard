@@ -1,5 +1,4 @@
 {
-  "message": "hello i18n !!",
   "login": "Login",
   "Remember me": "Remember me",
   "E-mail is required": "E-mail is required",
@@ -7,5 +6,13 @@
   "Password is required": "Password is required",
   "Invalid email or password": "Invalid email or password",
   "Users - Table": "Users - Table",
-  "Actions": "Actions"
+  "ACTIONS": "Actions",
+  "DELETE": "Delete",
+  "CANCEL": "Cancel",
+  "ID": "id",
+  "NAME": "name",
+  "SURNAME": "surname",
+  "EMAIL": "e-mail",
+  "DELETE_SUCCESS": "Item successfully deleted",
+  "DELETE_ERROR": "Error while deleting the item"
 }

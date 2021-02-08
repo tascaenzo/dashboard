@@ -1,5 +1,4 @@
 {
-  "message": "ciao i18n !!",
   "login": "Accedi",
   "Remember me": "Resta connesso",
   "E-mail is required": "E-mail richiesta",
@@ -7,5 +6,13 @@
   "Password is required": "Password richiesta",
   "Invalid email or password": "E-mail o password errati",
   "Users - Table": "Tabella - Utenti",
-  "Actions": "Azioni"
+  "ACTIONS": "Azioni",
+  "DELETE": "Elimina",
+  "CANCEL": "Annulla",
+  "ID": "id",
+  "NAME": "nome",
+  "SURNAME": "cognome",
+  "EMAIL": "e-mail",
+  "DELETE_SUCCESS": "Elemento eliminato con successo",
+  "DELETE_ERROR": "Errore durante l'eliminazione dell'elemento"
 }
