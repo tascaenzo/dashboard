@@ -6,7 +6,7 @@
       </v-col>
       <v-col style="text-align: right">
         <v-btn
-          @onClick="fetchData"
+          @click="fetchData"
           elevation="5"
           color="blue-grey"
           class="ma-2 white--text"
@@ -47,7 +47,7 @@
         @page-count="pageCount = $event"
       >
         <template v-slot:[`item.actions`]="{ item }">
-          <v-col>
+          <v-col style="padding-left:0px; margin-left:-10px">
             <v-btn
               v-if="remove"
               class="mx-2"

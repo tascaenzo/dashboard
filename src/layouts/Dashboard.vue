@@ -42,7 +42,7 @@
 
       <SearchBar />
 
-      <v-menu left bottom>
+      <v-menu left bottom offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
             <v-icon>mdi-account</v-icon>
@@ -51,8 +51,17 @@
             <v-icon>mdi-view-dashboard</v-icon>
           </v-btn>
         </template>
-
         <v-list>
+          <v-list-item link>
+            <router-link to="/login">
+              <v-list-item-title to="/login"
+                >test</v-list-item-title
+              ></router-link
+            >
+          </v-list-item>
+        </v-list>
+
+        <!-- <v-list>
           <v-list-item>
             <v-list-item-title>
               <router-link to="/login">Option Login</router-link>
@@ -66,7 +75,7 @@
           <v-list-item>
             <v-list-item-title @click="refresh"> Refresh </v-list-item-title>
           </v-list-item>
-        </v-list>
+        </v-list> -->
       </v-menu>
     </v-app-bar>
 
