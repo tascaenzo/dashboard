@@ -14,5 +14,7 @@
   "SURNAME": "cognome",
   "EMAIL": "e-mail",
   "DELETE_SUCCESS": "Elemento eliminato con successo",
-  "DELETE_ERROR": "Errore durante l'eliminazione dell'elemento"
+  "DELETE_ERROR": "Errore durante l'eliminazione dell'elemento",
+  "PROFILE": "Profilo",
+  "LOGOUT": "Logout"
 }

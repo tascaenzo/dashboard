@@ -26,7 +26,7 @@
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title
-                @click="redirect(item)"
+                @click="redirect(item.path)"
                 v-text="item.text"
               ></v-list-item-title>
             </v-list-item-content>
@@ -42,40 +42,34 @@
 
       <SearchBar />
 
-      <v-menu left bottom offset-y>
+      <v-menu bottom offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-account</v-icon>
-          </v-btn>
+          <v-row class="pr-6 pl-1">
+            <v-list-item v-bind="attrs" v-on="on">
+              <v-list-item-avatar>
+                <v-img src="https://randomuser.me/api/portraits/men/85.jpg" />
+              </v-list-item-avatar>
+              <v-list-item-title>John Leider</v-list-item-title>
+            </v-list-item>
+          </v-row>
+
           <v-btn icon>
             <v-icon>mdi-view-dashboard</v-icon>
           </v-btn>
         </template>
-        <v-list>
-          <v-list-item link>
-            <router-link to="/login">
-              <v-list-item-title to="/login"
-                >test</v-list-item-title
-              ></router-link
-            >
+        <v-list dense>
+          <v-list-item link @click="redirect('/profile')">
+            <v-icon class="pr-3">mdi-account</v-icon>
+            {{ $t("PROFILE") }}
+          </v-list-item>
+
+          <v-divider></v-divider>
+
+          <v-list-item class="p-6" link @click="redirect('/profile')">
+            <v-icon class="pr-3">mdi-exit-to-app</v-icon>
+            {{ $t("LOGOUT") }}
           </v-list-item>
         </v-list>
-
-        <!-- <v-list>
-          <v-list-item>
-            <v-list-item-title>
-              <router-link to="/login">Option Login</router-link>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title @click="logOut">
-              Option Logout
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title @click="refresh"> Refresh </v-list-item-title>
-          </v-list-item>
-        </v-list> -->
       </v-menu>
     </v-app-bar>
 
@@ -113,9 +107,8 @@ export default Vue.extend({
     drawer: true
   }),
   methods: {
-    redirect(element: { path: string }) {
-      console.log(element);
-      this.$router.push(element.path);
+    redirect(path: string) {
+      this.$router.push(path);
     },
     logOut() {
       Store.dispatch(`Auth/${ActionTypes.LOGOUT}`);

@@ -14,5 +14,7 @@
   "SURNAME": "surname",
   "EMAIL": "e-mail",
   "DELETE_SUCCESS": "Item successfully deleted",
-  "DELETE_ERROR": "Error while deleting the item"
+  "DELETE_ERROR": "Error while deleting the item",
+  "PROFILE": "Profile",
+  "LOGOUT": "Logout"
 }
