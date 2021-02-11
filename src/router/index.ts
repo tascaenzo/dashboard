@@ -30,7 +30,14 @@ const routes: Array<RouteConfig> = [
   {
     path: "/users",
     name: "User",
-    component: () => import("@/views/Users.vue"),
+    component: () => import("@/views/user/UserTable.vue"),
+    beforeEnter: checkAuth,
+    meta: { layout: Dashboard }
+  },
+  {
+    path: "/users/create",
+    name: "UserCreate",
+    component: () => import("@/views/user/UserForm.vue"),
     beforeEnter: checkAuth,
     meta: { layout: Dashboard }
   },
