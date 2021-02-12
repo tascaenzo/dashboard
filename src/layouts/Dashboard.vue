@@ -49,7 +49,9 @@
               <v-list-item-avatar>
                 <v-img src="https://randomuser.me/api/portraits/men/85.jpg" />
               </v-list-item-avatar>
-              <v-list-item-title>John Leider</v-list-item-title>
+              <v-list-item-title>{{
+                `${me.name} ${me.surname}`
+              }}</v-list-item-title>
             </v-list-item>
           </v-row>
 
@@ -89,6 +91,8 @@ import Notification from "@/components/Notification.vue";
 import SearchBar from "@/components/SearchBar.vue";
 import { ActionTypes } from "@/store/auth/actions";
 import Store from "@/store";
+import { mapState } from "vuex";
+import { state as authState } from "@/store/auth/state";
 
 export default Vue.extend({
   name: "Dashboard",
@@ -106,6 +110,11 @@ export default Vue.extend({
     ],
     drawer: true
   }),
+  computed: {
+    ...mapState({
+      me: () => authState.user
+    })
+  },
   methods: {
     redirect(path: string) {
       this.$router.push(path);

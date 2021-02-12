@@ -42,6 +42,13 @@ const routes: Array<RouteConfig> = [
     meta: { layout: Dashboard }
   },
   {
+    path: "/users/:id",
+    name: "UserUpdate",
+    component: () => import("@/views/user/UserForm.vue"),
+    beforeEnter: checkAuth,
+    meta: { layout: Dashboard }
+  },
+  {
     path: "/login",
     name: "Login",
     component: () => import("@/views/Login.vue"),

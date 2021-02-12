@@ -5,8 +5,16 @@
   "E-mail must be valid": "E-mail must be valid",
   "Password is required": "Password is required",
   "Invalid email or password": "Invalid email or password",
+  
   "Users - Table": "Users - Table",
   "Users - Create": "Users - Create",
+  "Name": "Name",
+  "E-mail": "E-mail",
+  "Password": "Password",
+  "Password Confirm": "Password Confirm",
+  "Surname": "Surname",
+  "Is Banned ?": "Is Banned ?",
+  
   "ACTIONS": "Actions",
   "DELETE": "Delete",
   "CANCEL": "Cancel",

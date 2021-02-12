@@ -5,8 +5,15 @@
   "E-mail must be valid": "E-mail non valida",
   "Password is required": "Password richiesta",
   "Invalid email or password": "E-mail o password errati",
+
   "Users - Table": "Tabella - Utenti",
   "Users - Create": "Crea - Utente",
+  "Name": "Nome",
+  "Surname": "Cognome",
+  "E-mail": "E-mail",
+  "Password": "Password",
+  "Password Confirm": "Conferma Password",
+  "Is Banned ?": "Utente Bannato ?",
 
   "ACTIONS": "Azioni",
   "DELETE": "Elimina",
