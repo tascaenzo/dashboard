@@ -24,11 +24,12 @@
           <v-icon dark>mdi-content-save</v-icon>
         </v-btn>
         <v-btn
+          fab
           v-if="create"
           elevation="5"
           color="blue-grey"
           class="ma-2 white--text"
-          fab
+          @click="redirect(`${path}/create`)"
         >
           <v-icon dark>mdi-plus</v-icon>
         </v-btn>
@@ -59,10 +60,26 @@
             >
               <v-icon dark>mdi-delete</v-icon>
             </v-btn>
-            <v-btn v-if="update" class="mx-2" fab dark small color="cyan">
+            <v-btn
+              @click="redirect(`${path}/${item.id}`)"
+              v-if="update"
+              class="mx-2"
+              fab
+              dark
+              small
+              color="cyan"
+            >
               <v-icon dark>mdi-pencil</v-icon>
             </v-btn>
-            <v-btn v-else class="mx-2" fab dark small color="cyan">
+            <v-btn
+              @click="redirect(`${path}/${item.id}`)"
+              v-else
+              class="mx-2"
+              fab
+              dark
+              small
+              color="cyan"
+            >
               <v-icon dark>mdi-eye</v-icon>
             </v-btn>
           </v-col>
@@ -167,6 +184,9 @@ export default Vue.extend({
       fetchData: `Crud/${ActionTypes.READ_ALL}`,
       deleteAction: `Crud/${ActionTypes.DELETE}`
     }),
+    redirect(path: string) {
+      this.$router.push(path);
+    },
     openAlert(item: { id: StringConstructor }) {
       this.alertItem = item;
       this.dialogDelete = true;

@@ -36,7 +36,6 @@
             v-model="email"
             label="E-mail"
             :rules="emailRules"
-            required="true"
           ></v-text-field>
 
           <v-text-field
@@ -47,7 +46,6 @@
             v-model="password"
             label="Password"
             @click:append="showPassword = !showPassword"
-            required="true"
           ></v-text-field>
 
           <v-checkbox
@@ -93,10 +91,10 @@ export default Vue.extend({
       password: "",
       remember: false,
 
-      /* Validation form */
+      /* Validation Form */
       emailRules: [
         (v: string) => !!v || this.$t("E-mail is required"),
-        (v: string) => /.+@.+/.test(v) || this.$t("E-mail must be valid")
+        (v: string) => /.+@.+\..+/.test(v) || this.$t("E-mail must be valid")
       ],
       passwordRules: [(v: string) => !!v || this.$t("Password is required")]
     };

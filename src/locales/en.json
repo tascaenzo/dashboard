@@ -5,6 +5,7 @@
   "E-mail must be valid": "E-mail must be valid",
   "Password is required": "Password is required",
   "Invalid email or password": "Invalid email or password",
+  "Field is required": "Field is required",
   
   "Users - Table": "Users - Table",
   "Users - Create": "Users - Create",
@@ -13,7 +14,7 @@
   "Password": "Password",
   "Password Confirm": "Password Confirm",
   "Surname": "Surname",
-  "Is Banned ?": "Is Banned ?",
+  "Is Banned": "Is Banned",
   
   "ACTIONS": "Actions",
   "DELETE": "Delete",
@@ -25,5 +26,6 @@
   "DELETE_SUCCESS": "Item successfully deleted",
   "DELETE_ERROR": "Error while deleting the item",
   "PROFILE": "Profile",
-  "LOGOUT": "Logout"
+  "LOGOUT": "Logout",
+  "FORM_WARNING": "Validation failed, check the fields highlighted in red"
 }

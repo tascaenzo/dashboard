@@ -5,6 +5,7 @@
   "E-mail must be valid": "E-mail non valida",
   "Password is required": "Password richiesta",
   "Invalid email or password": "E-mail o password errati",
+  "Field is required": "Campo Richiesto",
 
   "Users - Table": "Tabella - Utenti",
   "Users - Create": "Crea - Utente",
@@ -13,7 +14,7 @@
   "E-mail": "E-mail",
   "Password": "Password",
   "Password Confirm": "Conferma Password",
-  "Is Banned ?": "Utente Bannato ?",
+  "Is Banned": "Utente Bannato",
 
   "ACTIONS": "Azioni",
   "DELETE": "Elimina",
@@ -25,5 +26,6 @@
   "DELETE_SUCCESS": "Elemento eliminato con successo",
   "DELETE_ERROR": "Errore durante l'eliminazione dell'elemento",
   "PROFILE": "Profilo",
-  "LOGOUT": "Logout"
+  "LOGOUT": "Logout",
+  "FORM_WARNING": "Convalida fallita, verifica i campi evidenziati in rosso"
 }
