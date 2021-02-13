@@ -69,7 +69,7 @@
           prepend-icon="mdi-key-variant"
           :label="$t('Password Confirm')"
           :v-model="passwordConfirm"
-          :rules="requiredRules"
+          :rules="[passwordRules.password(dto.password)]"
         />
 
         <v-checkbox
@@ -86,6 +86,7 @@ import { NotificationDto } from "@/models/notification.dto";
 import { UserDto } from "@/models/user.dto";
 import { ActionTypes as NotificationActionTypes } from "@/store/notification/actions";
 import Vue from "vue";
+import i18n from "@/plugins/i18n";
 
 export default Vue.extend({
   name: "UserForm",
@@ -102,13 +103,18 @@ export default Vue.extend({
         (v: string) => !!v || this.$t("E-mail is required"),
         (v: string) => /.+@.+\..+/.test(v) || this.$t("E-mail must be valid")
       ],
-      requiredRules: [(v: string) => !!v || this.$t("Field is required")]
+      requiredRules: [(v: string) => !!v || this.$t("Field is required")],
+      passwordRules: {
+        password(v1: string) {
+          return (v: string) => v1 === v || i18n.t("PASSWORD_MATCH");
+        }
+      }
     };
   },
 
   methods: {
     async submit() {
-      console.log(this.dto);
+      console.log(this.passwordConfirm);
       if (!(this.$refs.form as HTMLFormElement).validate()) {
         this.$store.dispatch(
           NotificationActionTypes.PUSH_NOTIFICATION,
@@ -125,8 +131,6 @@ export default Vue.extend({
       this.dto = new UserDto();
       this.passwordConfirm = "";
       (this.$refs.form as HTMLFormElement).reset();
-
-      //this.$refs.form;
     }
   }
 });

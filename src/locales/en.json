@@ -27,5 +27,6 @@
   "DELETE_ERROR": "Error while deleting the item",
   "PROFILE": "Profile",
   "LOGOUT": "Logout",
-  "FORM_WARNING": "Validation failed, check the fields highlighted in red"
+  "FORM_WARNING": "Validation failed, check the fields highlighted in red",
+  "PASSWORD_MATCH":"Passwords do not match"
 }

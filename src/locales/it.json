@@ -27,5 +27,6 @@
   "DELETE_ERROR": "Errore durante l'eliminazione dell'elemento",
   "PROFILE": "Profilo",
   "LOGOUT": "Logout",
-  "FORM_WARNING": "Convalida fallita, verifica i campi evidenziati in rosso"
+  "FORM_WARNING": "Convalida fallita, verifica i campi evidenziati in rosso",
+  "PASSWORD_MATCH":"Le password non corrispondono"
 }
